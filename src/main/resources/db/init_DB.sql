@@ -1,0 +1,56 @@
+DROP TABLE IF EXISTS vote;
+DROP TABLE IF EXISTS dish;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS restaurant;
+DROP TABLE IF EXISTS users;
+DROP SEQUENCE IF EXISTS global_seq;
+
+CREATE SEQUENCE global_seq START WITH 100000;
+
+CREATE TABLE users
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(13) DEFAULT 'USER' NOT NULL,
+    registered TIMESTAMP DEFAULT now() NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+
+CREATE TABLE restaurant
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR(255) NOT NULL UNIQUE,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+CREATE TABLE menu
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date DATE  NOT NULL,
+    restaurant_id INTEGER NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
+);
+CREATE TABLE dish
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR(255) NOT NULL,
+    price INTEGER NOT NULL,
+    menu_id INTEGER NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL,
+    FOREIGN KEY (menu_id) REFERENCES menu (id) ON DELETE CASCADE
+);
+
+CREATE TABLE vote
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    date DATE NOT NULL,
+    menu_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL,
+    FOREIGN KEY (menu_id) REFERENCES menu (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
