@@ -3,7 +3,15 @@ package ru.bacaneco.voting.model;
 import org.hibernate.Hibernate;
 import ru.bacaneco.voting.HasId;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class AbstractBaseEntity implements HasId {
+    public static final int START_SEQ = 100_000;
+
+    @Id
+    @SequenceGenerator(name = "seq_generator", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_generator")
     protected Integer id;
 
     protected AbstractBaseEntity() {

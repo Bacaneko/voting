@@ -1,22 +1,39 @@
 package ru.bacaneco.voting.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Restaurant extends AbstractNamedEntity {
-    private Menu menu;
+    private boolean enabled = true;
 
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name, Menu menu) {
+    public Restaurant(String name) {
+        super(null, name);
+    }
+
+    public Restaurant(Integer id, String name) {
         super(id, name);
-        this.menu = menu;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public Restaurant(Integer id, String name, boolean enabled) {
+        super(id, name);
+        this.enabled = enabled;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public Restaurant(Restaurant restaurant) {
+        this.id = restaurant.getId();
+        this.name = restaurant.getName();
+        this.enabled = restaurant.isEnabled();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -24,7 +41,7 @@ public class Restaurant extends AbstractNamedEntity {
         return "Restaurant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", menu=" + menu +
+                ", enabled=" + enabled +
                 '}';
     }
 }

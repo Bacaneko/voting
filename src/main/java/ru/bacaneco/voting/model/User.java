@@ -1,12 +1,30 @@
 package ru.bacaneco.voting.model;
 
+
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.*;
 import java.time.Instant;
 
+@Entity
 public class User extends AbstractNamedEntity {
+
+    @Email
+    @Size(max = 100)
     private String email;
+
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private Role role;
 
+    @NotNull
+    @PastOrPresent
     private Instant registered = Instant.now();
 
     protected boolean enabled = true;

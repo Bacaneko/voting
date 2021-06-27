@@ -1,8 +1,24 @@
 package ru.bacaneco.voting.model;
 
+import com.sun.istack.NotNull;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.PositiveOrZero;
+
+@Entity
 public class Dish extends AbstractNamedEntity {
+
+    @PositiveOrZero
     private int price;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id")
     private Menu menu;
+
     private boolean enabled = true;
 
     public Dish() {

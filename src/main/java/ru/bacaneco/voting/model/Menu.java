@@ -1,14 +1,26 @@
 package ru.bacaneco.voting.model;
 
+import com.sun.istack.NotNull;
+
+import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+@Entity
 public class Menu extends AbstractBaseEntity{
+
+    @NotNull
+    @FutureOrPresent
     private LocalDate date;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
+    @OneToMany(mappedBy = "menu")
     private List<Dish> dishes = Collections.emptyList();
 
     private boolean enabled = true;
