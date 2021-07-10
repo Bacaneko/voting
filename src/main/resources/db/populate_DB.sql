@@ -21,7 +21,7 @@ VALUES ('Turkish'), -- 100004
 INSERT INTO menu (date, restaurant_id)
 VALUES ('2021-06-26', 100004), -- 100009
        ('2021-06-26', 100005), -- 100010
-       ('2021-06-25', 100006), -- 100011
+       (now(), 100006), -- 100011
        ('2021-06-26', 100007); -- 100012
 INSERT INTO menu (date, restaurant_id, enabled)
 VALUES (now(), 100008, false); -- 100013
