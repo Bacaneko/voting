@@ -45,8 +45,8 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}")
-    public Menu getById(int id) {
-        return menuRepository.findByIdWithRestaurantAndDishes(id);
+    public Menu getById(@PathVariable int menuId) {
+        return menuRepository.findByIdWithRestaurantAndDishes(menuId);
     }
 
 
