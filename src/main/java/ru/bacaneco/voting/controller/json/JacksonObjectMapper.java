@@ -1,4 +1,4 @@
-package ru.bacaneco.voting.controller;
+package ru.bacaneco.voting.controller.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

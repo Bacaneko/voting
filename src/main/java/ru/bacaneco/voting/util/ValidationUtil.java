@@ -3,6 +3,8 @@ package ru.bacaneco.voting.util;
 import ru.bacaneco.voting.HasId;
 import ru.bacaneco.voting.util.exception.IllegalRequestDataException;
 
+import java.util.NoSuchElementException;
+
 public class ValidationUtil {
     private ValidationUtil() {
     }
@@ -22,6 +24,12 @@ public class ValidationUtil {
                     "%s must be with id=%d!",
                     object.getClass().getSimpleName().replaceFirst("To", ""),
                     id));
+        }
+    }
+
+    public static void checkIsFound(boolean found) {
+        if (!found) {
+            throw new NoSuchElementException();
         }
     }
 }

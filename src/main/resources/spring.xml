@@ -87,7 +87,7 @@
     <!--    Spring Web MVC-->
     <context:component-scan base-package="ru.bacaneco.voting.controller"/>
 
-    <bean class="ru.bacaneco.voting.controller.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
+    <bean class="ru.bacaneco.voting.controller.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
     <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
         <!--        <property name="formatters">-->
