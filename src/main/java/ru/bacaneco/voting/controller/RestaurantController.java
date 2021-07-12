@@ -45,6 +45,7 @@ public class RestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<Restaurant> create(Restaurant restaurant) {
         ValidationUtil.checkIsNew(restaurant);
 
