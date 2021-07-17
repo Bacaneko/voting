@@ -1,5 +1,6 @@
 package ru.bacaneco.voting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ public class Dish extends AbstractNamedEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
+    @JsonIgnore
     private Menu menu;
 
     private boolean enabled = true;
