@@ -65,21 +65,21 @@ public class DishController {
         return ResponseEntity.created(uriOfNewResources).body(newDish);
     }
 
-//    @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-//    @Transactional
-//    public void update(@RequestBody DishTo dishTo, @PathVariable int dishId) {
-//        log.info("Update dish with id={}", dishId);
-//
-//        ValidationUtil.assureIdConsistency(dishTo, dishId);
-//
-//        Dish oldDish = dishRepository.findByIdWithMenu(dishId);
-//
-//        Menu menu = oldDish.getMenu();
-//
-//        Dish newDish = DishUtil.of(dishTo, menu);
-//        dishRepository.save(newDish);
-//    }
+    @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @Transactional
+    public void update(@RequestBody DishTo dishTo, @PathVariable int dishId) {
+        log.info("Update dish with id={}", dishId);
+
+        ValidationUtil.assureIdConsistency(dishTo, dishId);
+
+        Dish oldDish = dishRepository.findByIdWithMenu(dishId);
+
+        Menu menu = oldDish.getMenu();
+
+        Dish newDish = DishUtil.of(dishTo, menu);
+        dishRepository.save(newDish);
+    }
 
 
 }
