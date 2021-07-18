@@ -37,7 +37,7 @@ public class MenuController {
     }
 
     @DeleteMapping("/{menuId}")
-    public void deleteById(int id, @PathVariable String menuId) {
+    public void deleteById(int id, @PathVariable int menuId) {
         log.info("Delete menu with id={}", id);
         menuRepository.deleteById(id);
     }
