@@ -24,6 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/menus", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
+    public final static String ENTITY_NAME = "menu";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,7 +69,7 @@ public class MenuController {
 
         int restaurantId = menuTo.getRestaurantId();
 
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();;
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
 
         Menu newMenu = new Menu(MenuUtil.of(menuTo, restaurant));
         log.info("Create a new menu {}", newMenu);

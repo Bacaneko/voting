@@ -21,6 +21,8 @@ import java.net.URI;
 @RestController
 @RequestMapping(value = "/dishes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishController {
+    public final static String ENTITY_NAME = "dish";
+
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 

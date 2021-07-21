@@ -19,8 +19,6 @@ import ru.bacaneco.voting.util.ExceptionUtil;
 import ru.bacaneco.voting.util.exception.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.net.BindException;
 import java.util.Map;
 import java.util.NoSuchElementException;
 

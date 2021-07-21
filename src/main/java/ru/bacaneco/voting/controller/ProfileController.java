@@ -45,6 +45,7 @@ public class ProfileController {
 
         User user = UserUtil.of(userTo);
 
+
         User newUser = userRepository.save(passwordAndEmailProcessing(user));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/profile").build().toUri();
