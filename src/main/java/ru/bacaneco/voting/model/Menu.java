@@ -1,6 +1,8 @@
 package ru.bacaneco.voting.model;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 public class Menu extends AbstractBaseEntity{
 

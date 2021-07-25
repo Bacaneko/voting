@@ -2,6 +2,7 @@ package ru.bacaneco.voting.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ import java.util.Optional;
 @RequestMapping(value = "/menus", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuController {
     public final static String ENTITY_NAME = "menu";
+    public static final String TODAYS_MENUS_CACHE_NAME = "todaysMenus";
+
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -50,6 +53,7 @@ public class MenuController {
     }
 
     @GetMapping("/todays")
+    @Cacheable(TODAYS_MENUS_CACHE_NAME)
     public List<Menu> getTodays() {
         LocalDate date = LocalDate.now();
         log.info("Get today's: {} menus", date);
