@@ -29,10 +29,7 @@ public class MenuController extends AbstractController {
     public final static String ENTITY_NAME = "menu";
     public static final String TODAYS_MENUS_CACHE_NAME = "todaysMenus";
 
-
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-
 
     private final RestaurantRepository restaurantRepository;
 
@@ -69,6 +66,22 @@ public class MenuController extends AbstractController {
         return menu;
     }
 
+
+    @PatchMapping("/{menuId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void enable (@PathVariable int menuId, @RequestParam boolean enabled) {
+        log.info("{} the menu with id {}", enabled ? "Enable" : "Disable", menuId);
+        Menu menu = menuRepository.findById(menuId).orElseThrow();
+
+        if (enabled) {
+            Integer restaurantId = menu.getRestaurant().getId();
+            ValidationUtil.checkIsEnabled(restaurantRepository.findByEnabledTrueAndId(restaurantId) != null,
+                    restaurantId, RestaurantController.ENTITY_NAME);
+        }
+        menu.setEnabled(enabled);
+        menuRepository.save(menu);
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional

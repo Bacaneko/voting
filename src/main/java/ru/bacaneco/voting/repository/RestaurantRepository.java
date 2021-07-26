@@ -7,4 +7,5 @@ import ru.bacaneco.voting.model.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
+    Restaurant findByEnabledTrueAndId(int id);
 }
