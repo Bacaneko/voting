@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
+    public final static String ENTITY_NAME = "restaurant";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 

@@ -4,6 +4,7 @@ import ru.bacaneco.voting.HasId;
 import ru.bacaneco.voting.controller.DishController;
 import ru.bacaneco.voting.controller.MenuController;
 import ru.bacaneco.voting.model.Menu;
+import ru.bacaneco.voting.util.exception.IllegalOperationException;
 import ru.bacaneco.voting.util.exception.IllegalRequestDataException;
 import ru.bacaneco.voting.util.exception.IllegalVoteException;
 
@@ -38,6 +39,14 @@ public class ValidationUtil {
         }
     }
 
+    public static void checkIsEnabled(boolean enabled, int parentId, String parentEntityName) {
+        if (!enabled) {
+            throw new IllegalOperationException(String.format(
+                    "Operation can't be performed because the %s with id %d is disabled",
+                    parentEntityName, parentId));
+        }
+    }
+
     public static void checkIsValidForVoting(Menu menu, int menuId, LocalDate today) {
         if (!menu.getDate().equals(today)) {
             throw new IllegalVoteException(String.format(
@@ -47,6 +56,13 @@ public class ValidationUtil {
             throw new IllegalVoteException(String.format(
                     "The %s with id %d can't be voted now as it contains no %s items",
                     MenuController.ENTITY_NAME, menuId, DishController.ENTITY_NAME));
+        }
+    }
+
+    public static void checkIsPresentOrFuture(Menu menu) {
+        if (menu.getDate().isBefore(LocalDate.now())) {
+            throw new IllegalOperationException(String.format(
+                    "Operation can't be performed because the affected menu (id %d) is expired", menu.getId()));
         }
     }
 }

@@ -62,7 +62,10 @@ public class MenuController {
 
     @GetMapping("/{menuId}")
     public Menu getById(@PathVariable int menuId) {
-        return menuRepository.findByIdWithRestaurantAndDishes(menuId);
+        log.info("Get menu with id={}", menuId);
+        Menu menu = menuRepository.findByIdWithRestaurantAndDishes(menuId);
+        ValidationUtil.checkIsFound(menu != null);
+        return menu;
     }
 
 
@@ -74,6 +77,8 @@ public class MenuController {
         int restaurantId = menuTo.getRestaurantId();
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
+        ValidationUtil.checkIsEnabled(restaurant.isEnabled(), restaurantId, RestaurantController.ENTITY_NAME);
+
 
         Menu newMenu = new Menu(MenuUtil.of(menuTo, restaurant));
         log.info("Create a new menu {}", newMenu);
@@ -89,9 +94,14 @@ public class MenuController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
     public void update(@RequestBody MenuTo menuTo, @PathVariable int menuId) {
+        log.info("Update menu with id={}", menuId);
+        ValidationUtil.assureIdConsistency(menuTo, menuId);
+        Menu oldMenu = menuRepository.findById(menuId).orElseThrow();
+        ValidationUtil.checkIsPresentOrFuture(oldMenu);
 
         int restaurantId = menuTo.getRestaurantId();
         Restaurant restaurant = restaurantRepository.findById(menuTo.getRestaurantId()).orElseThrow();
+        ValidationUtil.checkIsEnabled(restaurant.isEnabled(), restaurantId, RestaurantController.ENTITY_NAME);
 
         Menu newMenu = MenuUtil.of(menuTo, restaurant);
 
