@@ -54,6 +54,31 @@ public class DishController extends AbstractController {
         dishRepository.deleteById(dishId);
     }
 
+    @PatchMapping("/{dishId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void enable(@PathVariable int dishId, @RequestParam boolean enabled) {
+        log.info("{} the dish with id {}", enabled ? "Enable" : "Disable", dishId);
+
+        Dish dish = dishRepository.findByIdWithMenu(dishId);
+        ValidationUtil.checkIsFound(dish != null);
+        ValidationUtil.checkIsEnabled(dish.isEnabled(), dishId, ENTITY_NAME);
+
+        Menu menu = dish.getMenu();
+        ValidationUtil.checkIsEnabled(menu.isEnabled(), menu.getId(), ENTITY_NAME);
+        ValidationUtil.checkIsPresentOrFuture(menu);
+
+        if (enabled) {
+            Integer menuId = dish.getMenu().getId();
+            ValidationUtil.checkIsEnabled(menuRepository.findByEnabledTrueAndId(menuId) != null,
+                    menuId, MenuController.ENTITY_NAME);
+        }
+        dish.setEnabled(enabled);
+        dishRepository.save(dish);
+
+        evictCacheIfTodays(dish.getMenu());
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<Dish> create(@RequestBody DishTo dishTo) {
