@@ -2,10 +2,12 @@ package ru.bacaneco.voting.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,23 +22,22 @@ import ru.bacaneco.voting.util.ValidationUtil;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/menus", produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuController {
+public class MenuController extends AbstractController {
     public final static String ENTITY_NAME = "menu";
     public static final String TODAYS_MENUS_CACHE_NAME = "todaysMenus";
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final MenuRepository menuRepository;
+
 
     private final RestaurantRepository restaurantRepository;
 
-    public MenuController(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
-        this.menuRepository = menuRepository;
+    public MenuController(CacheManager cacheManager, MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+        super(cacheManager, menuRepository);
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -75,7 +76,6 @@ public class MenuController {
         ValidationUtil.checkIsNew(menuTo);
 
         int restaurantId = menuTo.getRestaurantId();
-
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
         ValidationUtil.checkIsEnabled(restaurant.isEnabled(), restaurantId, RestaurantController.ENTITY_NAME);
 
@@ -104,8 +104,25 @@ public class MenuController {
         ValidationUtil.checkIsEnabled(restaurant.isEnabled(), restaurantId, RestaurantController.ENTITY_NAME);
 
         Menu newMenu = MenuUtil.of(menuTo, restaurant);
-
         menuRepository.save(newMenu);
+
+        if (!evictCacheIfTodays(newMenu)) {
+            evictCacheIfTodays(oldMenu);
+        }
+    }
+
+    private boolean evictCacheIfTodays(Menu menu) {
+        if (menu.getDate().equals(LocalDate.now()) && !menu.getDishes().isEmpty()) {
+            evictTodaysMenusCache();
+            return true;
+        }
+        return false;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    void evictTodaysMenusCache() {
+        log.info("Clear the cache of today's menus");
+        evictCache();
     }
 
 }

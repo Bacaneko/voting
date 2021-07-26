@@ -2,6 +2,7 @@ package ru.bacaneco.voting.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,11 @@ import ru.bacaneco.voting.util.DishUtil;
 import ru.bacaneco.voting.util.ValidationUtil;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(value = "/dishes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class DishController {
+public class DishController extends AbstractController {
     public final static String ENTITY_NAME = "dish";
 
 
@@ -28,11 +30,9 @@ public class DishController {
 
     private final DishRepository dishRepository;
 
-    private final MenuRepository menuRepository;
-
-    public DishController(DishRepository dishRepository, MenuRepository menuRepository) {
+    public DishController(CacheManager cacheManager, DishRepository dishRepository, MenuRepository menuRepository) {
+        super(cacheManager, menuRepository);
         this.dishRepository = dishRepository;
-        this.menuRepository = menuRepository;
     }
 
     @GetMapping("/{dishId}")
@@ -81,6 +81,18 @@ public class DishController {
 
         Dish newDish = DishUtil.of(dishTo, menu);
         dishRepository.save(newDish);
+
+
+        evictCacheIfTodays(oldDish.getMenu());
+    }
+
+    private boolean evictCacheIfTodays(Menu newMenu) {
+        if (newMenu.getDate().equals(LocalDate.now())) {
+            log.info("Clear the cache of today's menus");
+            evictCache();
+            return true;
+        }
+        return false;
     }
 
 

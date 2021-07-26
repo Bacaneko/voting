@@ -2,6 +2,8 @@ package ru.bacaneco.voting.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.bacaneco.voting.model.Restaurant;
+import ru.bacaneco.voting.repository.MenuRepository;
 import ru.bacaneco.voting.repository.RestaurantRepository;
 import ru.bacaneco.voting.util.ValidationUtil;
 
@@ -17,14 +20,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestaurantController {
+public class RestaurantController extends AbstractController {
     public final static String ENTITY_NAME = "restaurant";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantController(RestaurantRepository restaurantRepository) {
+    public RestaurantController(CacheManager cacheManager, MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+        super(cacheManager, menuRepository);
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -64,6 +68,7 @@ public class RestaurantController {
     @PutMapping(value = "/{restaurantId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
+    @CacheEvict(value = MenuController.TODAYS_MENUS_CACHE_NAME, allEntries = true)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int restaurantId) {
         log.info("Update restaurant by id={}", restaurantId);
         ValidationUtil.assureIdConsistency(restaurant, restaurantId);
