@@ -3,6 +3,7 @@ package ru.bacaneco.voting.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bacaneco.voting.model.Menu;
@@ -27,4 +28,7 @@ public interface MenuRepository  extends JpaRepository<Menu, Integer> {
 
     @Query("SELECT DISTINCT m FROM Menu m JOIN FETCH m.restaurant JOIN FETCH m.dishes d WHERE m.date=:date AND d.enabled=true")
     List<Menu> getTodays(LocalDate date);
+
+    @Query("SELECT m FROM Menu m JOIN FETCH m.dishes d WHERE d.id=:id")
+    Menu findByDishId(@Param("id") int dishId);
 }

@@ -47,6 +47,10 @@ public class DishController extends AbstractController {
     public void deleteById(@PathVariable int dishId) {
         log.info("Delete dish by id={}", dishId);
 
+        Menu menu = menuRepository.findByDishId(dishId);
+        ValidationUtil.checkIsFound(menu != null);
+        ValidationUtil.checkIsPresentOrFuture(menu);
+
         dishRepository.deleteById(dishId);
     }
 
@@ -55,7 +59,10 @@ public class DishController extends AbstractController {
     public ResponseEntity<Dish> create(@RequestBody DishTo dishTo) {
         ValidationUtil.checkIsNew(dishTo);
 
-        Menu menu = menuRepository.findById(dishTo.getMenuId()).orElseThrow();
+        int menuId = dishTo.getMenuId();
+        Menu menu = menuRepository.findById(menuId).orElseThrow();
+        ValidationUtil.checkIsEnabled(menu.isEnabled(), menuId, MenuController.ENTITY_NAME);
+        ValidationUtil.checkIsPresentOrFuture(menu);
 
         Dish newDish = DishUtil.of(dishTo, menu);
         log.info("Create new dish={}", newDish);
@@ -72,18 +79,31 @@ public class DishController extends AbstractController {
     @Transactional
     public void update(@RequestBody DishTo dishTo, @PathVariable int dishId) {
         log.info("Update dish with id={}", dishId);
-
         ValidationUtil.assureIdConsistency(dishTo, dishId);
 
         Dish oldDish = dishRepository.findByIdWithMenu(dishId);
+        ValidationUtil.checkIsFound(oldDish != null);
+        ValidationUtil.checkIsEnabled(oldDish.isEnabled(), dishId, ENTITY_NAME);
 
         Menu menu = oldDish.getMenu();
+        Integer menuId = menu.getId();
+        ValidationUtil.checkIsEnabled(menu.isEnabled(), menuId, ENTITY_NAME);
+        ValidationUtil.checkIsPresentOrFuture(menu);
+
+        int newMenuId = dishTo.getMenuId();
+        if (newMenuId != menuId) {
+            Menu newMenu = menuRepository.findById(newMenuId).orElseThrow();
+            ValidationUtil.checkIsEnabled(newMenu.isEnabled(), newMenuId, MenuController.ENTITY_NAME);
+            ValidationUtil.checkIsPresentOrFuture(newMenu);
+            menu = newMenu;
+        }
 
         Dish newDish = DishUtil.of(dishTo, menu);
         dishRepository.save(newDish);
 
-
-        evictCacheIfTodays(oldDish.getMenu());
+        if (!evictCacheIfTodays(menu) && newMenuId != menuId) {
+            evictCacheIfTodays(oldDish.getMenu());
+        }
     }
 
     private boolean evictCacheIfTodays(Menu newMenu) {
