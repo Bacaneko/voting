@@ -49,6 +49,18 @@ public class RestaurantController extends AbstractController {
         return restaurantRepository.findAll();
     }
 
+    @PatchMapping("/{restaurantId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void enable(@PathVariable int restaurantId, @RequestParam boolean enabled) {
+        log.info("{} the restaurant with id {}", enabled ? "Enable" : "Disable", restaurantId);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
+
+        restaurant.setEnabled(enabled);
+        restaurantRepository.save(restaurant);
+
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<Restaurant> create(Restaurant restaurant) {
@@ -63,7 +75,6 @@ public class RestaurantController extends AbstractController {
 
         return ResponseEntity.created(uriOfNewResource).body(newRestaurant);
     }
-
 
     @PutMapping(value = "/{restaurantId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
