@@ -2,6 +2,7 @@ package ru.bacaneco.voting.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -17,6 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:db/postgres.properties")
 public class AppConfig {
 
     @Bean
@@ -27,7 +29,7 @@ public class AppConfig {
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(additionalProperties());
+        em.setJpaProperties(hibernateProperties());
 
         return em;
     }
@@ -38,7 +40,7 @@ public class AppConfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/voting");
         dataSource.setUsername("baca");
-        dataSource.setPassword("");
+        dataSource.setPassword("1234");
         return dataSource;
     }
 
@@ -55,10 +57,8 @@ public class AppConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    private Properties additionalProperties() {
+    private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("database.init", "true");
-        properties.setProperty("jdbc.initLocation", "classpath:db/init_DB.sql");
 
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.showSql", "true");
@@ -68,8 +68,9 @@ public class AppConfig {
 
 //      <!--2nd level hibernate cache-->
         properties.setProperty("hibernate.cache.use_second_level_cache", "true");
-        properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.internal.JCacheRegionFactory");
         properties.setProperty("hibernate.javax.cache.provider", "org.ehcache.jsr107.EhcacheCachingProvider");
+
         return properties;
     }
 }
