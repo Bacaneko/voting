@@ -1,7 +1,6 @@
 package ru.bacaneco.voting.controller;
 
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,11 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.bacaneco.voting.repository.UserRepository;
+import ru.bacaneco.voting.util.UserUtil;
 import ru.bacaneco.voting.AuthenticatedUser;
 import ru.bacaneco.voting.model.User;
-import ru.bacaneco.voting.repository.UserRepository;
 import ru.bacaneco.voting.to.UserTo;
-import ru.bacaneco.voting.util.UserUtil;
 import ru.bacaneco.voting.util.ValidationUtil;
 
 import java.net.URI;

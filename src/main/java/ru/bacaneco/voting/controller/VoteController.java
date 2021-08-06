@@ -8,10 +8,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.bacaneco.voting.AuthenticatedUser;
-import ru.bacaneco.voting.model.Menu;
-import ru.bacaneco.voting.model.Vote;
 import ru.bacaneco.voting.repository.MenuRepository;
 import ru.bacaneco.voting.repository.VoteRepository;
+import ru.bacaneco.voting.model.Menu;
+import ru.bacaneco.voting.model.Vote;
 import ru.bacaneco.voting.util.ValidationUtil;
 import ru.bacaneco.voting.util.exception.IllegalVoteException;
 

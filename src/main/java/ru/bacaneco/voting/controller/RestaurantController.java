@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.bacaneco.voting.model.Restaurant;
 import ru.bacaneco.voting.repository.MenuRepository;
 import ru.bacaneco.voting.repository.RestaurantRepository;
+import ru.bacaneco.voting.model.Restaurant;
 import ru.bacaneco.voting.util.ValidationUtil;
 
 import java.net.URI;

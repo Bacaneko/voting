@@ -5,6 +5,7 @@ import ru.bacaneco.voting.model.User;
 import java.util.EnumSet;
 
 public class AuthenticatedUser extends org.springframework.security.core.userdetails.User {
+    private static final long serialVersionUID = 1L;
 
     private User user;
 
@@ -26,5 +27,4 @@ public class AuthenticatedUser extends org.springframework.security.core.userdet
     public String toString() {
         return user.toString();
     }
-
 }

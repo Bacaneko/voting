@@ -20,12 +20,15 @@
         <hibernate-validator.version>6.1.2.Final</hibernate-validator.version>
 
         <postgresql.version>42.2.10</postgresql.version>
-
+        <javax-el.version>3.0.1-b11</javax-el.version>
         <json-path.version>2.4.0</json-path.version>
 
         <jackson-json.version>2.10.3</jackson-json.version>
 
         <ehcache.version>3.8.1</ehcache.version>
+
+        <spring-data-jpa.version>2.2.6.RELEASE</spring-data-jpa.version>
+
 
     </properties>
 
@@ -87,12 +90,58 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+        <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit-jupiter-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring-security.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${javax-el.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- Jackson -->
         <!-- Main library for JSON serialization in RestController -->

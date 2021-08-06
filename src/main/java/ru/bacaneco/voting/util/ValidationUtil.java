@@ -1,11 +1,11 @@
 package ru.bacaneco.voting.util;
 
-import ru.bacaneco.voting.HasId;
 import ru.bacaneco.voting.controller.DishController;
 import ru.bacaneco.voting.controller.MenuController;
 import ru.bacaneco.voting.model.Menu;
 import ru.bacaneco.voting.util.exception.IllegalOperationException;
 import ru.bacaneco.voting.util.exception.IllegalRequestDataException;
+import ru.bacaneco.voting.HasId;
 import ru.bacaneco.voting.util.exception.IllegalVoteException;
 
 import java.time.LocalDate;
