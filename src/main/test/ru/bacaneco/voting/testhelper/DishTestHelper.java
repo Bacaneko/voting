@@ -27,8 +27,6 @@ public class DishTestHelper {
     public static final Dish DISH2 = new Dish(DISH2_ID, "Turkish Dish 3", 15_000, MENU1);
     public static final Dish DISH3 = new Dish(DISH3_ID, "Turkish Dish 2", 35_000, MENU1);
     public static final Dish DISH4 = new Dish(DISH4_ID, "Japanese Dish 1", 35_000, MENU2);
-    public static final Dish DISH5 = new Dish(DISH5_ID, "Arabic Dish 2", 13_000, MENU3);
-    public static final Dish DISH6 = new Dish(DISH6_ID, "Arabic Dish 1", 30_000, MENU3);
     public static final Dish DISH7 = new Dish(DISH7_ID, "Moldovan Dish 1", 20_000, MENU4);
     public static final Dish DISH8 = new Dish(DISH8_ID, "Moldovan Dish 5", 30_000, MENU4);
     public static final Dish DISH9 = new Dish(DISH9_ID, "Moldovan Dish 4", 40_000, MENU4);
