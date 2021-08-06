@@ -1,5 +1,6 @@
 package ru.bacaneco.voting.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
-
 
 @Configuration
 @EnableTransactionManagement
