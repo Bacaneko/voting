@@ -15,3 +15,38 @@ If it is after 11:00 then it is too late, vote can't be changed
 Each restaurant provides new menu each day.
 
 As a result, provide a link to github repository. It should contain the code, README.md with API documentation and curl commands to get data for voting and vote.
+
+##REST API for Restaurants
+
+####Get by ID (without menus)
+Access: ADMIN
+
+GET /restaurants/[restaurant id]
+
+curl -s http://localhost:8080/voting/restaurants/100005 -u admin1@gmail.com:admin1
+
+####Delete by ID
+Access: ADMIN
+Not allowed if restaurant has at least one menu.
+
+DELETE /restaurants/[restaurant id]
+
+curl -s -X DELETE http://localhost:8080/voting/restaurants/100010 -u admin1@gmail.com:admin1
+
+####Create
+Access: ADMIN
+
+POST /restaurants
+
+Body: {"name":"[restaurant name]"}
+
+curl -s -X POST -d '{"name":"French"}' -H 'Content-Type:application/json' http://localhost:8080/voting/restaurants -u admin1@gmail.com:admin1
+
+####Update
+Access: ADMIN
+
+PUT /restaurants/[restaurant id]
+
+Body: {"name":"[restaurant name]"}
+
+curl -s -X PUT -d '{"name":"Turkish"}' -H 'Content-Type:application/json' http://localhost:8080/voting/restaurants/100009 -u admin1@gmail.com:admin1
