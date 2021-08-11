@@ -5,10 +5,12 @@ package ru.bacaneco.voting.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "users")
 public class User extends AbstractNamedEntity {
 
     @Email

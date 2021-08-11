@@ -1,8 +1,10 @@
 package ru.bacaneco.voting.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity {
     private boolean enabled = true;
 

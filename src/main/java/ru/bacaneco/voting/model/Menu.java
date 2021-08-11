@@ -12,6 +12,7 @@ import java.util.List;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
+@Table(name = "menu")
 public class Menu extends AbstractBaseEntity{
 
     @NotNull
