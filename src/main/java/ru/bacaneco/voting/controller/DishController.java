@@ -62,7 +62,8 @@ public class DishController extends AbstractController {
 
         Dish dish = dishRepository.findByIdWithMenu(dishId);
         ValidationUtil.checkIsFound(dish != null);
-        ValidationUtil.checkIsEnabled(dish.isEnabled(), dishId, ENTITY_NAME);
+//        cannot be changed  if dish is enabled = false
+//        ValidationUtil.checkIsEnabled(dish.isEnabled(), dishId, ENTITY_NAME);
 
         Menu menu = dish.getMenu();
         ValidationUtil.checkIsEnabled(menu.isEnabled(), menu.getId(), ENTITY_NAME);
@@ -79,7 +80,8 @@ public class DishController extends AbstractController {
         evictCacheIfTodays(dish.getMenu());
     }
 
-    @PostMapping
+    //    change the validation logic
+    @PostMapping()
     @Transactional
     public ResponseEntity<Dish> create(@RequestBody DishTo dishTo) {
         ValidationUtil.checkIsNew(dishTo);
@@ -99,6 +101,7 @@ public class DishController extends AbstractController {
         return ResponseEntity.created(uriOfNewResources).body(newDish);
     }
 
+//    change the validation logic - in request body can't be id
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional

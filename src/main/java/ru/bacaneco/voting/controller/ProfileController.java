@@ -38,6 +38,7 @@ public class ProfileController {
         return authUser.getUser();
     }
 
+    //   change the validation logic
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> register(@RequestBody UserTo userTo) {
         log.info("Create new user from userTo {}", userTo);
@@ -49,7 +50,7 @@ public class ProfileController {
                 .path("/profile").build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(newUser);
     }
-
+    //   change the validation logic
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo, @AuthenticationPrincipal AuthenticatedUser authUser) {

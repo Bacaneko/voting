@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.bacaneco.voting.model.User;
 import ru.bacaneco.voting.repository.UserRepository;
 
-@Service("securityUserService")
+@Service
 public class SecurityUserService implements UserDetailsService {
 
     private UserRepository userRepository;

@@ -63,7 +63,7 @@ public class RestaurantController extends AbstractController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<Restaurant> create(Restaurant restaurant) {
+    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         ValidationUtil.checkIsNew(restaurant);
 
         Restaurant newRestaurant = restaurantRepository.save(restaurant);

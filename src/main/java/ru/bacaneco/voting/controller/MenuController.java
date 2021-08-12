@@ -39,13 +39,13 @@ public class MenuController extends AbstractController {
     }
 
     @DeleteMapping("/{menuId}")
-    public void deleteById(int id, @PathVariable int menuId) {
-        log.info("Delete menu with id={}", id);
-        menuRepository.deleteById(id);
+    public void deleteById(@PathVariable int menuId) {
+        log.info("Delete menu with id={}", menuId);
+        menuRepository.deleteById(menuId);
     }
 
     @GetMapping("/history")
-    public List<Menu> getAllByDate(LocalDate date) {
+    public List<Menu> getAllByDate(@RequestBody LocalDate date) {
         log.info("Get menus by date: {}", date);
         return menuRepository.findAllByDate(date);
     }

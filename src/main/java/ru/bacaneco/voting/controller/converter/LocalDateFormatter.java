@@ -1,5 +1,6 @@
 package ru.bacaneco.voting.controller.converter;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.format.Formatter;
 import org.springframework.util.Assert;
 
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+@Configuration
 public class LocalDateFormatter implements Formatter<LocalDate> {
 
     @Override
